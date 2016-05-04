@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultEditorKit;
 
 import AutoKey.AutoKey;
-import DES.TEST2;
+import DES.STR_DES;
 import Monoalphabetic.Monoalphabetic;
 import Playfair.Playfair;
 import RowTranspsition.RowTransposition;
@@ -323,7 +323,7 @@ public class CIpher_text {
 							return;
 						}
 						try {
-							DES.TEST2 t = new TEST2();
+							DES.STR_DES t = new STR_DES();
 							cipher_text.setText(t.encrypt(plain_text.getText(), key));
 						} catch (UnsupportedEncodingException e1) {
 							// TODO Auto-generated catch block
@@ -421,7 +421,7 @@ public class CIpher_text {
 							return;
 						}
 						try {
-							DES.TEST2 t = new TEST2();
+							DES.STR_DES t = new STR_DES();
 							plain_text.setText(t.decrypt(cipher_text.getText(), key));
 						} catch (UnsupportedEncodingException e1) {
 							// TODO Auto-generated catch block
