@@ -71,6 +71,17 @@ public class interFace {
             });
 		JMenuItem mntmUser = new JMenuItem("USer");
 		mnNew.add(mntmUser);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mnNew.add(mntmExit);
+		mntmExit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+		});
 		mntmUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -136,13 +147,8 @@ public class interFace {
 		JMenu mnAbout = new JMenu("about");
 		menuBar.add(mnAbout);
 		
-		JMenu mnExit = new JMenu("Exit");
-		menuBar.add(mnExit);
-		mnExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-            	System.exit(0);
-            }
-            });
+	
+		
+
 	}
 }

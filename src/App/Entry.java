@@ -27,12 +27,22 @@ public class Entry {
 	private JTextField textField;
 	private JPasswordField passwordField;
 public void enter () throws ClassNotFoundException, SQLException{
+	boolean flag=false;
+	if(new String ("admin").equals(textField.getText())&&new String("admin").equals( new String (passwordField.getPassword() ) )) {
+		flag=true;
+		
+		frame.setVisible(false);
+		interFace ad = new interFace();
+		String gz[] = null;
+		ad.main(gz); 
+		return ;
+}
 	Class.forName("com.mysql.jdbc.Driver");
 	java.sql.Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	java.sql.Statement state=conn.createStatement();
 	String sql ="select * from users";
 	java.sql.ResultSet res =  state.executeQuery(sql);
-	boolean flag=false;
+	
 	while(res.next()){
 		if(res.getString("firstname").equals(textField.getText())&&res.getString("password").equals( new String (passwordField.getPassword() ) )) {
 	    		flag=true;

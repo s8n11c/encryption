@@ -1,11 +1,15 @@
 package App;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,13 +17,21 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.print.event.PrintJobAdapter;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultEditorKit;
@@ -29,18 +41,6 @@ import DES.STR_DES;
 import Monoalphabetic.Monoalphabetic;
 import Playfair.Playfair;
 import RowTranspsition.RowTransposition;
-
-import javax.swing.JTextPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 
 public class CIpher_text {
 
@@ -152,8 +152,6 @@ public class CIpher_text {
 		JCheckBoxMenuItem chckbxmntmPlayfair = new JCheckBoxMenuItem("playfair");
 		mnAlgorithm.add(chckbxmntmPlayfair);
 		BG.add(chckbxmntmPlayfair);
-		JMenuItem menuItem = new JMenuItem("New menu item");
-		mnAlgorithm.add(menuItem);
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -230,7 +228,38 @@ public class CIpher_text {
 	        });
 		JMenuItem mntmPrint = new JMenuItem("Print");
 		mnFile.add(mntmPrint);
-		
+		mntmPrint.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Printing
+				BufferedWriter out;
+				try {
+					out = new BufferedWriter(new FileWriter("1.txt"));
+					out.write("dddd");
+					out.flush();
+					out.close();
+					File ff =  new File("1.txt");
+					
+				
+					PrinterJob pj = PrinterJob.getPrinterJob();
+					
+					if(pj.printDialog()){
+						 try {pj.print();}
+					        catch (PrinterException exc) {
+					            System.out.println(exc);
+					         }
+						}
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+
+			}
+		});
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
 		
@@ -313,7 +342,12 @@ public class CIpher_text {
 							JOptionPane.showMessageDialog(null, "the key is empty");
 							return;
 						}
-						cipher_text.setText(AES.AES.encrypt(plain_text.getText(), key));
+						try {
+							cipher_text.setText(AES.FINAL_AES.encrypt(plain_text.getText(), key));
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+						   JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
 					
 				}else if(chckbxmntmDes.isSelected()){
 					
@@ -411,7 +445,12 @@ public class CIpher_text {
 							JOptionPane.showMessageDialog(null, "the key is empty");
 							return;
 						}
-						plain_text.setText(AES.AES.decrypt(cipher_text.getText(), key));
+						try {
+							plain_text.setText(AES.FINAL_AES.decrypt(cipher_text.getText(), key));
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null,e1.getMessage());
+						}
 					
 				}else if(chckbxmntmDes.isSelected()){
 					
@@ -446,4 +485,4 @@ public class CIpher_text {
 			}
 		});
 		}
-}
+	}

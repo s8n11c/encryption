@@ -1,6 +1,7 @@
 package App;
 
 import java.awt.EventQueue;
+import java.awt.JobAttributes;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -8,6 +9,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.JPasswordField;
 
 public class register {
 
@@ -34,7 +37,7 @@ public class register {
 	static final String DB_URL = "jdbc:mysql://localhost/users";
 	static final String USER = "sonic";
 	static final String PASS = "sonic";
-	private JTextField password;
+	private JPasswordField password;
 	
 	/**
 	 * Launch the application.
@@ -118,12 +121,12 @@ public class register {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 		     	JFileChooser fileChooser = new JFileChooser();
-            	FileFilter ft = new FileNameExtensionFilter("images files","jpg");
+            	FileFilter ft = new FileNameExtensionFilter("images files","jpg","png","tif");
             	
             	fileChooser.setDialogTitle("Select your photo");    
 
-            		fileChooser.addChoosableFileFilter(ft);
-            		
+            		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("images ","jpg"));
+						
             		int userSelection = fileChooser.showOpenDialog(null);
             		
             		
@@ -132,12 +135,16 @@ public class register {
             	    File file = fileChooser.getSelectedFile();
             	    
             	    String filename= file.toString();
-            	    
+            	    String ext = filename.substring(filename.lastIndexOf(".")+1);
+            	    if(!(ext.equals("jpg")||ext.equals("png"))){
+            	    	JOptionPane.showMessageDialog(null,"you selected wrong image extension ");
+            	    	return ;
+            	    }
             	    image.setText(filename);
             	    
             
 				}else{
-					JOptionPane.showMessageDialog(null, "it should be an image ");
+					JOptionPane.showMessageDialog(null, "you didn't choose any image  ");
 				}
             	}
 		});
@@ -154,7 +161,7 @@ public class register {
 					if(username_checker(address.getText())){
 						if(username_checker(lastname.getText())){
 							if(isValidEmailAddress(email.getText())){
-								if(password_checker(password.getText())){
+								if(password_checker(new String(password.getPassword()))){
 									if(image_checker(image.getText())){
 										try {
 											Class.forName("com.mysql.jdbc.Driver");
@@ -176,36 +183,36 @@ public class register {
 									      
 									      FileInputStream fis = new FileInputStream(file);
 									      preparedStmt.setBinaryStream (5,fis,(int)file.length());
-									      preparedStmt.setString(6, password.getText());
+									      preparedStmt.setString(6, new String(password.getPassword()));
 									      // execute the preparedstatement
 									      preparedStmt.executeUpdate();
 									  
 									      fis.close();
 									      preparedStmt.close();
+									      frame.setVisible(false);
 										} catch (SQLException | IOException e1) {
 											// TODO Auto-generated catch block
 											e1.printStackTrace();
 										}
 										
-									}
-							}
-							}
-						}
-					}
-				}
+									} else{JOptionPane.showMessageDialog(null,"image should be exists");}
+							} else {JOptionPane.showMessageDialog(null,"password is empty"); }
+							}else{JOptionPane.showMessageDialog(null, "the email is in wrong format "); }
+						}else{JOptionPane.showMessageDialog(null,"last name is in wrong format ");}
+					}else{JOptionPane.showMessageDialog(null,"address is in wrong format");}
+				}else{JOptionPane.showMessageDialog(null, "username format is wrong ");}
 			
 			}});
 		btnRegister.setBounds(177, 287, 117, 25);
 		frame.getContentPane().add(btnRegister);
 		
-		password = new JTextField();
-		password.setBounds(177, 197, 114, 19);
-		frame.getContentPane().add(password);
-		password.setColumns(10);
-		
 		JLabel lblPassword = new JLabel("password");
 		lblPassword.setBounds(28, 203, 70, 15);
 		frame.getContentPane().add(lblPassword);
+		
+		password = new JPasswordField();
+		password.setBounds(177, 197, 117, 19);
+		frame.getContentPane().add(password);
 	}
 	public boolean isValidEmailAddress(String email) {
 	           String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
