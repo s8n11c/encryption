@@ -144,8 +144,24 @@ public class interFace {
 		JMenu mnNewMenu = new JMenu("Help");
 		menuBar.add(mnNewMenu);
 		
+		JMenuItem mntmCipherAlgorithm = new JMenuItem("cipher algorithm");
+		mntmCipherAlgorithm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		mnNewMenu.add(mntmCipherAlgorithm);
+		
 		JMenu mnAbout = new JMenu("about");
 		menuBar.add(mnAbout);
+		
+		JMenuItem mntmUs = new JMenuItem("US");
+		mnAbout.add(mntmUs);
+		
+		JMenuItem mntmAlgorithms = new JMenuItem("algorithms");
+		mnAbout.add(mntmAlgorithms);
+		
+		JMenuItem mntmTheCourse = new JMenuItem("the course");
+		mnAbout.add(mntmTheCourse);
 		
 	
 		

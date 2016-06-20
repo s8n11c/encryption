@@ -81,6 +81,7 @@ public class finder {
 		    byte[] img_bytes =res.getBytes("image");
 		    Image img = Toolkit.getDefaultToolkit().createImage(img_bytes);
 		    ImageIcon icon= new ImageIcon(img);
+		    
  		   image.setIcon(icon);
 		}
 		

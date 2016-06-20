@@ -107,7 +107,7 @@ public class RielFence {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
-		String test="amrunixisthebest";
+		String test="helloworld";
 		System.out.println(encrypt(test, 7));
 		System.out.println(decrypt(encrypt(test, 7), 7));
 	}

@@ -7,6 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.videoio.VideoCapture;
+
+
+import org.opencv.imgproc.Imgproc;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
@@ -15,6 +24,8 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -92,7 +103,7 @@ public class register {
 		email.setColumns(10);
 		
 		image = new JTextField();
-		image.setBounds(177, 228, 163, 19);
+		image.setBounds(177, 245, 163, 19);
 		frame.getContentPane().add(image);
 		image.setColumns(10);
 		
@@ -113,7 +124,7 @@ public class register {
 		frame.getContentPane().add(lblEmail);
 		
 		JLabel lblImage = new JLabel("image");
-		lblImage.setBounds(51, 230, 70, 15);
+		lblImage.setBounds(51, 247, 70, 15);
 		frame.getContentPane().add(lblImage);
 		
 		JButton btnBrowse = new JButton("browse");
@@ -148,7 +159,7 @@ public class register {
 				}
             	}
 		});
-		btnBrowse.setBounds(352, 225, 117, 25);
+		btnBrowse.setBounds(352, 242, 117, 25);
 		frame.getContentPane().add(btnBrowse);
 		
 		JButton btnRegister = new JButton("register");
@@ -233,7 +244,7 @@ public class register {
 		return false;
 		
 	}
-		private boolean password_checker(String password){ if (password.equals(""))return false;
+		private boolean password_checker(String password){if(password.length()<8) return false; if (password.equals(""))return false;
 		return true;
 		
 		}

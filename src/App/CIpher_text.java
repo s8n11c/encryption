@@ -9,13 +9,17 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
+import java.util.Scanner;
 
 import javax.print.event.PrintJobAdapter;
 import javax.swing.ButtonGroup;
@@ -167,18 +171,18 @@ public class CIpher_text {
 					file=jfc.getSelectedFile();
 					try {
 						FileReader fr = new FileReader(file);
-					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 				
-					try {
+				
+						plain_text.setText("");
 						for(String part :Files.readAllLines(file.toPath())){
 							plain_text.setText(plain_text.getText()+part+"\n");
-						}
-					} catch (IOException e) {
+						} 
+					
+					}
+					
+					 catch (IOException e1) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						e1.printStackTrace();
 					}
 					
 				}else {
@@ -197,7 +201,7 @@ public class CIpher_text {
 	            	JFileChooser fileChooser = new JFileChooser();
 	            	FileFilter ft = new FileNameExtensionFilter("text files","txt");
 	            	fileChooser.setDialogTitle("Specify a file to save");    
-
+           
 	            	
 	            		fileChooser.addChoosableFileFilter(ft);
 	            		
@@ -262,7 +266,14 @@ public class CIpher_text {
 		});
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
-		
+		mntmExit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				frmCiphering.setVisible(false);
+			}
+		});
 		JMenu mnEdite = new JMenu("Edit");
 		menuBar.add(mnEdite);
 		
@@ -280,8 +291,9 @@ public class CIpher_text {
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				plain_text.setText(plain_text.getText().replaceAll("\\s",""));
 				if(chckbxmntmCeaser.isSelected()){
+				
 					int key=Integer.parseInt(key_text.getText());
 					if(key==0){
 						JOptionPane.showMessageDialog(null, "the key is empty");
@@ -299,24 +311,31 @@ public class CIpher_text {
 						cipher_text.setText(AutoKey.encrypt(plain_text.getText(), key));
 						
 				}else if(chckbxmntmPlayfair.isSelected()){
-				
+				   try{
 						String key=key_text.getText();
 						if(key.equals(null)){
 							JOptionPane.showMessageDialog(null, "the key is empty");
 							return;
 						}
 						cipher_text.setText(Playfair.encrypt(plain_text.getText(), key));
+				   }catch(Exception w){
+					   JOptionPane.showMessageDialog(null, "read the algoithm manual");
+				   }
 				}else if(chckbxmntmRielfence.isSelected()){
-					
+					try{
 						int key=Integer.parseInt(key_text.getText());
 						if(key==0){
 							JOptionPane.showMessageDialog(null, "the key is empty");
 							return;
 						}
-						cipher_text.setText(rielFence.RielFence.encrypt(plain_text.getText(), key));
+						cipher_text.setText(rielFence.RielFence.encrypt(plain_text.getText(), key));  
+					}catch(Exception w){
+						JOptionPane.showMessageDialog(null, "read the algoithm manual");
+						
+					}
 				}else if(chckbxmntmRowtransposition.isSelected()){
 					
-				
+				try{
 						int key[]=new int [key_text.getText().length()];
 						
 						int i=0 ; while (i<key_text.getText().length()){key[i]=(int)key_text.getText().charAt(i++);}
@@ -325,15 +344,21 @@ public class CIpher_text {
 							return;
 						}
 						cipher_text.setText(RowTransposition.encrypt(plain_text.getText(), key));
+				}catch(Exception w){
+					JOptionPane.showMessageDialog(null, "read the algoithm manual");
+				}
 				}else if(chckbxmntmVigenere.isSelected()){
 					
-				
+				try{
 						String key=key_text.getText();
 						if(key.equals(null)){
 							JOptionPane.showMessageDialog(null, "the key is empty");
 							return;
 						}
 						cipher_text.setText(vigenere.Vignere.encrypt(plain_text.getText(), key));
+				}catch(Exception w){
+					JOptionPane.showMessageDialog(null, "read the algoithm manual");
+				}
 					
 				}else if(chckbxmntmAes.isSelected()){
 			
@@ -373,12 +398,19 @@ public class CIpher_text {
 					}
 			
 				//
+					try{
 					cipher_text.setText(Monoalphabetic.encrypt(plain_text.getText()).get_left());
 					key_text.setText(Monoalphabetic.encrypt(plain_text.getText()).get_right());
+					}catch(Exception e2){
+					JOptionPane.showMessageDialog(null, "read the algothims manuale ");	
+					}
+			
 			}else{
 				JOptionPane.showMessageDialog(null,"you didn't select an algorithm");
 			}
+			
 			}
+			
 		});
 		button_2.addMouseListener(new MouseAdapter() {
 			@Override
